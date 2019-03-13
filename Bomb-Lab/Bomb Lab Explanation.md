@@ -74,23 +74,19 @@ So now we are trying to find the first input.
 (307 is explode bomb, hence if number higher than 7 it’ll explode)
 So pick at number between your range, and then do ni till something like that:
 
-         ```
+        
         0x0000000000400ecb <+59>:    jmpq   *0x402460(,%rax,8)
-        ```
+       
 After a line like that you will start jumping around
 and see where it goes. From the line you are at there aren’t many line to go through till explode bomb. You’ll want to check your register. I had a char as my second input so I saw what was going into my eax register:
 
-         ```
+        
          0x0000000000400ef4 <+100>:   mov    $0x79,%eax //convert 0x79 into char
-         ```
+        
 That was my second input and my third input was right after and I looked at what was being compared:
-```
+
          0x0000000000400ef9 <+105>:   cmpl   $0x1ae,0x8(%rsp) //3rd thing,converted into decimal
-         ```
-
-
-
-
+         
 Your bomb might just ask for two number, hence first number is a number within a certain range and second number will be a hex number to convert into a decimal.(Trial and error can be very useful) 
 
 
@@ -105,20 +101,19 @@ My first number was found by looking for compare statement and once again I had 
 ```
  0x000000000040102a <+34>:    cmpl   $0xe,0xc(%rsp)//range 0-14
  0x000000000040102f <+39>:    jbe    0x401036 <phase_4+46>  //jump below equal 
- ```
+``` 
 If you step in func4, you might encounter:
 
-```
          400fe2:        d1 eb                        shr    %ebx  
-         ```
+       
 //shift right  by 1 since no operand saying how much to shift  //shift by 1 is like dividing by 2 (hence whatever value ebx holds will be divided by 2)
 
 
 Anyway, toward the end of your function they are comparing a hex number to eax, what’s in eax is what came out of func4:
-```
-        0x0000000000401049 <+65>:    cmp    $0x25,%eax  //compare $eax to 37
+
+           0x0000000000401049 <+65>:    cmp    $0x25,%eax  //compare $eax to 37
            0x000000000040104c <+68>:    jne    0x401055 <phase_4+77>
-           ```
+       
 So eax needs to be equal to 0x25 and that is your second number.
 
 
@@ -169,26 +164,18 @@ x/32dw $edx  //x /[Length][Format] [Address expression]
 
 2nd way(probably best to know):
 There is a loop that goes through the linked list:
-```
+
          0x000000000040112f <+95>:    mov    0x8(%rdx),%rdx 
-         ```
+     
         This line updates the pointer, so the first time it went through 
         I printed: rdx            0x6042e0
 And if you use x/w $rdx it’ll print the node 
 So you can go through the loop and get 2 nodes like that and if you continue through your code you should be able to find the other node by looking into registers(it is a long way hence I recommend the 1st way to find the answer but you should “understand” the second way.
 
-```
-0x000000000040119a <+202>:   cmp    %eax,(%rbx) //compared 2nd and 1st node
+           0x000000000040119a <+202>:   cmp    %eax,(%rbx) //compared 2nd and 1st node
            0x000000000040119c <+204>:   jge    0x4011a3 <phase_6+211>
-           ```
+ 
         Near the end, so after you know the decimal value of your 6 nodes, you have to arrange them in a certain order. The two line above basically compare and say the 1st node need to be bigger than the second node, hence it should from biggest to smallest.
-
-
-
-
-
-
-
 
 # Phase 7(secret phase):
 Alright this one is long so I’ll try to say some key things.
