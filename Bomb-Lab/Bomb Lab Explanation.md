@@ -5,7 +5,7 @@ This is a readme file that will hopefully provide you with helpful hints. This i
 I will attach the handout I received to this repository. 
 First and foremost you need to get your own bomb through a server and every bomb is unique however sometimes some bombs have similar “logic” or “answer”.
 Before you dive in the phases you need to have some debugging skills.
-In this particular bomb I will be using GDB and I will also attach a nice GDB cheat sheet
+In this particular bomb I will be using GDB and I will also attach a nice GDB cheat sheet.
 IMPORTANT: Don’t forget to set a breakpoint at explode_bomb. 
 
 
@@ -102,19 +102,23 @@ Like the previous phase, you want to check what kind of input they require(do sa
 You can go through the second function (func4). It’s a recursive function(it calls itself).
 My first number was found by looking for compare statement and once again I had a range.
 
-
+```
  0x000000000040102a <+34>:    cmpl   $0xe,0xc(%rsp)//range 0-14
  0x000000000040102f <+39>:    jbe    0x401036 <phase_4+46>  //jump below equal 
+ ```
 If you step in func4, you might encounter:
 
-
+```
          400fe2:        d1 eb                        shr    %ebx  
+         ```
 //shift right  by 1 since no operand saying how much to shift  //shift by 1 is like dividing by 2 (hence whatever value ebx holds will be divided by 2)
 
 
 Anyway, toward the end of your function they are comparing a hex number to eax, what’s in eax is what came out of func4:
+```
         0x0000000000401049 <+65>:    cmp    $0x25,%eax  //compare $eax to 37
            0x000000000040104c <+68>:    jne    0x401055 <phase_4+77>
+           ```
 So eax needs to be equal to 0x25 and that is your second number.
 
 
@@ -131,12 +135,14 @@ It’ll print your array so you can see where it’s iterating and you’ll noti
 
 
 You have a counter that’s increased by one everytime you go through the loop. If you want you can do trial and error( you have “x” amount of values in your array hence you can try that many times). 
+```
   0x00000000004010a0 <+65>:    add    $0x1,%edx
   0x00000000004010a3 <+68>:    cltq //convert doubleword(16) to quadword
   0x00000000004010a5 <+70>:    mov    0x4024a0(,%rax,4),%eax  //goes through an array
    0x00000000004010ac <+77>:    add    %eax,%ecx  //ecx=will accumulate all the index value i hit(basically add every number in the array except the last one)
    0x00000000004010ae <+79>:    cmp    $0xf,%eax  //15 cmp 13 //eax =the value at the index
    0x00000000004010b1 <+82>:    jne    0x4010a0 <phase_5+65>
+   ```
 It’s kind of a difficult loop to understand so I’ll explain it:
 * First line is your counter increasing by 1(you add 1 to its value)
 * 3rd line this is a really interesting line so I will “draw” it in a smaller format to help you visualize it.
@@ -163,15 +169,18 @@ x/32dw $edx  //x /[Length][Format] [Address expression]
 
 2nd way(probably best to know):
 There is a loop that goes through the linked list:
+```
          0x000000000040112f <+95>:    mov    0x8(%rdx),%rdx 
+         ```
         This line updates the pointer, so the first time it went through 
         I printed: rdx            0x6042e0
 And if you use x/w $rdx it’ll print the node 
 So you can go through the loop and get 2 nodes like that and if you continue through your code you should be able to find the other node by looking into registers(it is a long way hence I recommend the 1st way to find the answer but you should “understand” the second way.
 
-
+```
 0x000000000040119a <+202>:   cmp    %eax,(%rbx) //compared 2nd and 1st node
            0x000000000040119c <+204>:   jge    0x4011a3 <phase_6+211>
+           ```
         Near the end, so after you know the decimal value of your 6 nodes, you have to arrange them in a certain order. The two line above basically compare and say the 1st node need to be bigger than the second node, hence it should from biggest to smallest.
 
 
