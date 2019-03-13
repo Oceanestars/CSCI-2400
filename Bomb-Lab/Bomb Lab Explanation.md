@@ -15,16 +15,18 @@ IMPORTANT: Don’t forget to set a breakpoint at explode_bomb.
 You need to look at the function name(for most phases); it’ll give you a hint as to what the input 
 might be.
 In my case:
+         ```
          0x0000000000400e36 <+9>:     callq  0x4012df <strings_not_equal>
+         ```
 I suggest you go through each line(ni in gdb) and print the registers( i r is the command in gdb) to see what’s going on(It’s a good habit to get into).
 x/s $xxxxxx will print in the format of a string (and x/d print in the format of an integer) 
 So Basically phase 1 is gonna compare your string with theirs. 
 Fortunately, their string is being passed in a register right before string not equal.
 Hence, I suggest you check(with the x/s command):
-        
+   ```     
    0x0000000000400e31 <+4>:     mov    $0x4023f0,%esi
    0x0000000000400e36 <+9>:     callq  0x4012df <strings_not_equal>
-
+```
 
 
 
@@ -33,12 +35,15 @@ Hence, I suggest you check(with the x/s command):
 
 Similarly as phase 1, you want to look at the function name:
 
-
+```
 0x0000000000400e52 <+9>:     callq  0x4014ec <read_six_numbers>
+```
 Hence, your input should be 6 numbers.
 You should pay attention to the compare instruction. One of the first one should give you your first number.
 If your bomb is like mine(by the way, I’ve also shared my objdump in this repository) , then you might notice a loop. That loop will change your registers. Thus, go through the loop and print the register and see if you see a pattern. If you don’t then you might realize one of the line such as:
- 0x0000000000400e74 <+43>:    add    (%rbx),%eax  
+```
+ 0x0000000000400e74 <+43>:    add    (%rbx),%eax
+ ```
 Might be the line that creates the pattern of your 6 numbers.
 This lines adds two number, (%rbx) is your previous number added to your current number. 
 
@@ -55,27 +60,33 @@ The key is your first input. Your first input will determine where it’ll jump.
 
 Anyway, you first want to check what kind of input they are expecting. Most likely before a function call they are moving a hex number into a register:
 
-
+```
  0x0000000000400ea3 <+19>:    mov    $0x402446,%esi 
+ ```
 With the x/s $0x402446 command it printed this "%d %c %d" hence I need 3 inputs (d=integer c=characters).
 After the function the assembly code will make sure you have the right amount of input.
 So now we are trying to find the first input. 
 
-
-         0x0000000000400ebc <+44>:    cmpl   $0x7,0xc(%rsp) //range 0-7 
+```
+ 0x0000000000400ebc <+44>:    cmpl   $0x7,0xc(%rsp) //range 0-7 
  0x0000000000400ec1 <+49>:    ja     0x400fc3 <phase_3+307>//jump if above
+ ```
 (307 is explode bomb, hence if number higher than 7 it’ll explode)
 So pick at number between your range, and then do ni till something like that:
 
-
+         ```
         0x0000000000400ecb <+59>:    jmpq   *0x402460(,%rax,8)
+        ```
 After a line like that you will start jumping around
 and see where it goes. From the line you are at there aren’t many line to go through till explode bomb. You’ll want to check your register. I had a char as my second input so I saw what was going into my eax register:
 
-
+         ```
          0x0000000000400ef4 <+100>:   mov    $0x79,%eax //convert 0x79 into char
+         ```
 That was my second input and my third input was right after and I looked at what was being compared:
+```
          0x0000000000400ef9 <+105>:   cmpl   $0x1ae,0x8(%rsp) //3rd thing,converted into decimal
+         ```
 
 
 
