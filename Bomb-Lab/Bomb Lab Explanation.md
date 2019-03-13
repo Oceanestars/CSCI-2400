@@ -1,4 +1,4 @@
-﻿Bomb Lab:
+# Bomb Lab:
 
 
 This is a readme file that will hopefully provide you with helpful hints. This is a really fun assignment and it’s really cool once you get the hang of it.
@@ -9,7 +9,7 @@ In this particular bomb I will be using GDB and I will also attach a nice GDB ch
 IMPORTANT: Don’t forget to set a breakpoint at explode_bomb. 
 
 
-Phase 1:
+# Phase 1:
 
 
 You need to look at the function name(for most phases); it’ll give you a hint as to what the input 
@@ -28,7 +28,7 @@ Hence, I suggest you check(with the x/s command):
 
 
 
-Phase 2:
+# Phase 2:
 
 
 Similarly as phase 1, you want to look at the function name:
@@ -45,7 +45,7 @@ This lines adds two number, (%rbx) is your previous number added to your current
 
 
 
-Phase 3:
+# Phase 3:
 
 
 Phase 3 might seem overwhelming but I promise it’s not.
@@ -83,7 +83,7 @@ That was my second input and my third input was right after and I looked at what
 Your bomb might just ask for two number, hence first number is a number within a certain range and second number will be a hex number to convert into a decimal.(Trial and error can be very useful) 
 
 
-Phase 4:
+# Phase 4:
 
 
 I was lucky and had an easy phase 4.
@@ -109,7 +109,7 @@ So eax needs to be equal to 0x25 and that is your second number.
 
 
 
-Phase 5:
+# Phase 5:
 To me this was the hardest, as usual check what kind of input it wants(for me it was 2 integer).
 A huge very helpful hint is that there is a loop here and that the loop is iterating through an array. So you want to figure out what’s in it. After the previous phases, you should be able to find the loop (like a jump instruction should be the last instruction of the loop)(if you have an issue with this phase feel free to shoot me a tweet, I may or may not be able to help).
 
@@ -135,7 +135,7 @@ It’s kind of a difficult loop to understand so I’ll explain it:
 * Will get out of the loop once the counter reaches 15 
 
 
-Phase 6:
+# Phase 6:
 (Same as previous look at function name, for me it was read six number hence input needs to be 6 numbers)
 Phase 6 was a linked list for me. Hence I was like trying to find the nodes. You can do trial and error and find where the node starts. Use the command x/3x $___(register) .
 
@@ -170,7 +170,7 @@ So you can go through the loop and get 2 nodes like that and if you continue thr
 
 
 
-Phase 7(secret phase):
+# Phase 7(secret phase):
 Alright this one is long so I’ll try to say some key things.
 
 
