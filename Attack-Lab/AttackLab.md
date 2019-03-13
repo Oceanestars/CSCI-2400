@@ -1,5 +1,5 @@
-#Things to know:
-*“Overrunning the buffer typically causes the program state to be corrupted, leading to a memory access error. Your task is to be more clever with the strings you feed CTARGET and RTARGET so that they do more interesting things. These are called exploit strings.”
+# Things to know:
+* “Overrunning the buffer typically causes the program state to be corrupted, leading to a memory access error. Your task is to be more clever with the strings you feed CTARGET and RTARGET so that they do more interesting things. These are called exploit strings.”
 
 * if you want to create a byte with a hex value of 0, you need to write it as 00
 * Put your answer backward so like 401020  -> 20 10 40
