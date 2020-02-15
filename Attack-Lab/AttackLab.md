@@ -2,13 +2,13 @@
 * “Overrunning the buffer typically causes the program state to be corrupted, leading to a memory access error. Your task is to be more clever with the strings you feed CTARGET and RTARGET so that they do more interesting things. These are called exploit strings.”
 
 * if you want to create a byte with a hex value of 0, you need to write it as 00
-* Put your answer backward so like 401020  -> 20 10 40
+* Put your answer backward so like 401020  -> 20 10 40 (Little endian vs Big endian)
 * Pre allocating memory, subtract rsp
 * Assigning value to rsp, adds to rsp
 * Code Injection vs Return oriented programming
 
 # Phase 1:
-* Figuring out How big the buffer by looking at
+* Figuring out how big the buffer is by looking at
 * get buff
 * sub    $0x38,%rsp , 0x38 = 56
 * Overflow the buffer and rewrite the return address by redirecting it to the address of touch1
@@ -73,7 +73,7 @@ d9 13 40 00 c3 00 00 00 //address of touch3
 * Similar logic as phase 2 but we are using return-oriented programming
 * Your first gadget will be a popq rax(58),it will pop data from the stack
 * Then put your cookie address and store it in rax thanks to gadget 1, then put the cookie into edi (hence mov rax,edi is your second gadget(48 89 c7 c3))
-* And then just past the address of touch2
+* And then just pass the address of touch2
 ```
 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00
