@@ -1,5 +1,6 @@
 # Bomb Lab:
 
+WRITTEN BY: Oceane Andreis
 
 This is a readme file that will hopefully provide you with helpful hints. This is a really fun assignment and it’s really cool once you get the hang of it.
 I will attach the handout I received to this repository. 
@@ -145,7 +146,17 @@ It’s kind of a difficult loop to understand so I’ll explain it:
    * If your first input is 0(eax), then you’ll go to the zero th position which holds 1. So eax becomes 1, so in the next loop you go to position 1 which has number 3 so eax becomes 3 so then in the next loop you go to the 3rd position which holds 2 so your eax becomes 2 and so on. 
 * Also ecx becomes bigger and bigger because you are adding every value you hit (so basically all of them except the 15th value. ecx= your 2nd input
 * Will get out of the loop once the counter reaches 15 
-
+* Another phase 5 requires 6 letters, translate your array into like an alphabet, do the math to figure the combo to be equal to the sum
+* Another phase 5 is crypotagraphy, You'll have to figure out what word it wants and then for example if you enter abcdef your input string will change and you can do x/6c $rsp+0x9(might be a different place in memory for you) and you'll see what your abcdef became. Create some sort of new alphabet from that and then make the word they want.
+Example:
+    a = o
+    b = c
+    d = s
+    e = l
+    f = q
+    q= a 
+    The word they want is locsqa, thus your input would be "eabdfq"
+    
 
 # Phase 6:
 (Same as previous look at function name, for me it was read six number hence input needs to be 6 numbers)
