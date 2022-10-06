@@ -6,8 +6,8 @@ This is a readme file that will hopefully provide you with helpful hints. This i
 I will attach the handout I received to this repository. 
 First and foremost you need to get your own bomb through a server and every bomb is unique however sometimes some bombs have similar “logic” or “answer”.
 Before you dive in the phases you need to have some debugging skills.
-In this particular bomb I will be using GDB and I will also attach a nice GDB cheat sheet.
-IMPORTANT: Don’t forget to set a breakpoint at explode_bomb. 
+In this particular bomb I will be using GDB and I will also attach a nice GDB cheat sheet.  
+**IMPORTANT: Don’t forget to set a breakpoint at explode_bomb.** 
 
 
 # Phase 1:
@@ -116,7 +116,7 @@ Anyway, toward the end of your function they are comparing a hex number to eax, 
            0x000000000040104c <+68>:    jne    0x401055 <phase_4+77>
        
 So eax needs to be equal to 0x25 and that is your second number.
-
+(Side note, if you are absolutely confident of your 2 numbers try adding a 0 in front of them, for example 5 05)
 
 
 
